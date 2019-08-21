@@ -4,6 +4,7 @@ import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,9 @@ import java.util.Properties;
  */
 @Configuration
 public class ShiroConfig {
+
+    @Autowired
+    ShiroProperties shiroProperties;
 
     //创建ShiroFilterFactoryBean
     @Bean
@@ -41,14 +45,12 @@ public class ShiroConfig {
          */
         Map<String,String> filterMap = new LinkedHashMap<>();
 
-        filterMap.put("/test","anon");
-
-//        filterMap.put("/add","perms[user:add]");
-
-        filterMap.put("/add","authc");
-        filterMap.put("/update","authc");
-
-
+        for (String value : shiroProperties.getAnon()) {// 不要验证
+            filterMap.put(value, ShiroProperties.ANON);
+        }
+        for (String value : shiroProperties.getAuthc()) {// 需要验证
+            filterMap.put(value, ShiroProperties.AUTHC);
+        }
 
         //修改调整的登录页面
         shiroFilterFactoryBean.setLoginUrl("toLogin");
@@ -94,6 +96,7 @@ public class ShiroConfig {
         SimpleMappingExceptionResolver simpleMappingExceptionResolver = new SimpleMappingExceptionResolver();
         Properties properties = new Properties();
         properties.setProperty("org.apache.shiro.authz.UnauthorizedException","noAuth");
+        properties.setProperty("org.apache.shiro.authz.AuthorizationException","noAuth");
         simpleMappingExceptionResolver.setExceptionMappings(properties);
         return simpleMappingExceptionResolver;
     }

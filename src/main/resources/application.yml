@@ -28,3 +28,13 @@ mybatis-plus:
     map-underscore-to-camel-case: true
   type-aliases-package: com.xd.xdshiro.modules.sys.mapper
   mapper-locations: classpath:mapper/**/*.xml
+
+
+
+
+shiro:
+  anon:
+    - /
+  authc:
+    - /add
+    - /update
