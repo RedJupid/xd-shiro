@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xd.xdshiro.modules.sys.entity.User">
-        <id column="u_id" property="uId" />
+        <id column="id" property="id" />
         <result column="username" property="username" />
         <result column="password" property="password" />
         <result column="name" property="name" />
@@ -14,7 +14,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        u_id, username, password, name, age, email
+        id, username, password, name, age, email
     </sql>
 
 </mapper>
